@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://b10tabca4i1up"]
+
+[ext_resource type="Script" uid="uid://8h37wapnsb7h" path="res://scripts/Borehole.cs" id="1_y5d6t"]
+[ext_resource type="PackedScene" uid="uid://nib3226a3r5v" path="res://scenes/sensor.tscn" id="2_bucti"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_bucti"]
+
+[node name="Borehole" type="Node3D"]
+script = ExtResource("1_y5d6t")
+SensorScene = ExtResource("2_bucti")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("SphereMesh_bucti")

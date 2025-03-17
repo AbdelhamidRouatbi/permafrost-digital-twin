@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=3 uid="uid://crok4mhcjdpdt"]
+
+[ext_resource type="Script" uid="uid://bipymyflkppe7" path="res://scripts/Main.cs" id="1_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://cwf0ocr6lr3rn" path="res://scenes/terrain.tscn" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://cy3qa1d504ui4" path="res://scenes/element.tscn" id="2_tefeu"]
+[ext_resource type="Script" uid="uid://baaha0elpva7t" path="res://scripts/camera_3d.gd" id="3_sugp2"]
+[ext_resource type="Script" uid="uid://cy074cro4j6iy" path="res://scripts/EntityGenerator.cs" id="5_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://b10tabca4i1up" path="res://scenes/borehole.tscn" id="5_tefeu"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0wfyh"]
+sky_top_color = Color(0.364838, 0.687274, 0.896072, 1)
+sky_horizon_color = Color(0.84257, 0.972602, 1.07089, 1)
+ground_bottom_color = Color(0.0761129, 0.273806, 0.45816, 1)
+ground_horizon_color = Color(0.84257, 0.972602, 1.07089, 1)
+
+[sub_resource type="Sky" id="Sky_tefeu"]
+sky_material = SubResource("ProceduralSkyMaterial_0wfyh")
+
+[sub_resource type="Environment" id="Environment_jyhfs"]
+background_mode = 2
+sky = SubResource("Sky_tefeu")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Main" type="Node"]
+script = ExtResource("1_0wfyh")
+ElementScene = ExtResource("2_tefeu")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jyhfs")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 14.8684, 0)
+light_color = Color(0.98408, 0.842197, 0.801859, 1)
+shadow_enabled = true
+
+[node name="Terrain" parent="." instance=ExtResource("1_o5qli")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.879521, 4.96064)
+script = ExtResource("3_sugp2")
+
+[node name="EntityGenerator" type="Node" parent="."]
+script = ExtResource("5_tbgi4")
+
+[node name="Borehole" parent="." instance=ExtResource("5_tefeu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 50)
+Depth = 50
+SensorCount = 10
+metadata/_edit_lock_ = true
+
+[node name="Borehole2" parent="." instance=ExtResource("5_tefeu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 200)
+Depth = 50
+SensorCount = 1
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[node name="RMQListener" type="Node" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_do"]
+
+[editable path="Terrain"]
