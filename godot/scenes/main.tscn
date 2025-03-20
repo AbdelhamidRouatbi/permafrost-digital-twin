@@ -1,11 +1,11 @@
 [gd_scene load_steps=10 format=3 uid="uid://crok4mhcjdpdt"]
 
-[ext_resource type="Script" uid="uid://bipymyflkppe7" path="res://scripts/Main.cs" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://cwf0ocr6lr3rn" path="res://scenes/terrain.tscn" id="1_o5qli"]
-[ext_resource type="PackedScene" uid="uid://cy3qa1d504ui4" path="res://scenes/element.tscn" id="2_tefeu"]
+[ext_resource type="Script" uid="uid://dgv8sptfoisea" path="res://scripts/main.gd" id="1_o6xl0"]
 [ext_resource type="Script" uid="uid://baaha0elpva7t" path="res://scripts/camera_3d.gd" id="3_sugp2"]
 [ext_resource type="Script" uid="uid://cy074cro4j6iy" path="res://scripts/EntityGenerator.cs" id="5_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://b10tabca4i1up" path="res://scenes/borehole.tscn" id="5_tefeu"]
+[ext_resource type="PackedScene" uid="uid://ciufhhiecybwe" path="res://scenes/heat_map.tscn" id="7_o6xl0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0wfyh"]
 sky_top_color = Color(0.364838, 0.687274, 0.896072, 1)
@@ -23,8 +23,7 @@ tonemap_mode = 2
 glow_enabled = true
 
 [node name="Main" type="Node"]
-script = ExtResource("1_0wfyh")
-ElementScene = ExtResource("2_tefeu")
+script = ExtResource("1_o6xl0")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_jyhfs")
@@ -45,21 +44,28 @@ script = ExtResource("5_tbgi4")
 
 [node name="Borehole" parent="." instance=ExtResource("5_tefeu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 50)
-Depth = 50
-SensorCount = 10
 metadata/_edit_lock_ = true
 
 [node name="Borehole2" parent="." instance=ExtResource("5_tefeu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 200)
-Depth = 50
-SensorCount = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90.3669, 0, 123.765)
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 5.0
 autostart = true
 
 [node name="RMQListener" type="Node" parent="."]
 
-[connection signal="timeout" from="Timer" to="." method="_do"]
+[node name="HeatMap" parent="." instance=ExtResource("7_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.9915, 0, 50.7232)
+
+[node name="Borehole3" parent="." instance=ExtResource("5_tefeu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.9523, 0, 116.581)
+
+[node name="Borehole4" parent="." instance=ExtResource("5_tefeu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 106.791, 0, 62.7365)
+
+[node name="Borehole5" parent="." instance=ExtResource("5_tefeu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68.9329, 0, 87.8595)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 
 [editable path="Terrain"]

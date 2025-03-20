@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://nib3226a3r5v"]
 
-[ext_resource type="Script" uid="uid://cy0shwwaq2xvn" path="res://scripts/Sensor.cs" id="1_l45pj"]
+[ext_resource type="Script" uid="uid://bdxoqgxod2ede" path="res://scripts/Sensor.gd" id="1_42blq"]
 [ext_resource type="Script" uid="uid://d08egpocowww6" path="res://scripts/RmqListener.cs" id="2_42blq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l45pj"]
@@ -10,7 +10,7 @@ material = SubResource("StandardMaterial3D_l45pj")
 height = 1.0
 
 [node name="Sensor" type="Node3D"]
-script = ExtResource("1_l45pj")
+script = ExtResource("1_42blq")
 
 [node name="SensorMesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("CylinderMesh_42blq")

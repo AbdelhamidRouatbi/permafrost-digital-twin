@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=4 uid="uid://ciufhhiecybwe"]
+
+[ext_resource type="Shader" uid="uid://dqsyl6kn8c40k" path="res://shader/temperature_shader.gdshader" id="1_t1dj2"]
+[ext_resource type="Script" uid="uid://tjob0o1pmpen" path="res://scripts/heat_map.gd" id="2_nwkj2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nwkj2"]
+render_priority = 0
+shader = ExtResource("1_t1dj2")
+shader_parameter/sensors = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/sensor_count = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_pi4k8"]
+material = SubResource("ShaderMaterial_nwkj2")
+
+[node name="HeatMap" type="MeshInstance3D"]
+cast_shadow = 0
+mesh = SubResource("BoxMesh_pi4k8")
+script = ExtResource("2_nwkj2")
