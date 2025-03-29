@@ -13,16 +13,25 @@ void fragment() {
 	float numerator = 0.0;
 	float denominator = 0.0;
 	for (int i = 0; i < sensor_count; i++) {
+		if (abs(world_pos.y - sensors[i].y) < 3.0)
+		{
 		float dist = distance(world_pos, vec3(sensors[i].x, sensors[i].y, sensors[i].z));
 		if (dist != 0.0) {
 			float invDist = 1.0 / dist;
 			numerator += sensors[i].w * invDist;
 			denominator += invDist;
 		}
+	}}
+	float temperature = (numerator/denominator);
+	float minT = -20.0;
+	float maxT = 20.0;
+	temperature = (temperature - minT) / (maxT - minT);
+	if (temperature < 0.5) {
+		ALBEDO = vec3(0.0, temperature*2.0, 1.0 - temperature*2.0);
+	} else {
+		ALBEDO = vec3((temperature - 0.5)*2.0, 2.0*(1.0 - temperature), 0.0);
 	}
-	float temperature = (numerator/denominator)/100.0;
-	ALBEDO = vec3(temperature*temperature, 0.1, 1.0 - temperature*temperature);
-	ALPHA = 1.0 - temperature * temperature;
+	ALPHA = 0.3;
 	EMISSION = ALBEDO.rgb / 2.0;
 }
 

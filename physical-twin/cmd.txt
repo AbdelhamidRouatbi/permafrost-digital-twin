@@ -1,0 +1,1 @@
+start /B python CD100.py & start /B python CD101.py & start /B python CD102.py & start /B python CD103A.py & start /B python CD104.py & start /B python CD105.py

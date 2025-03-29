@@ -1,8 +1,8 @@
 extends Node3D
 class_name Sensor
 
-@export var temperature: float = 100.0
-
+@export var temperature: float = -30.0
+var sensorsBelow: Array[Sensor] = []
 
 func _update():
 	_update_label()

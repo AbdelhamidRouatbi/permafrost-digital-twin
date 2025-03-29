@@ -3,9 +3,9 @@ class_name Borehole
 @export var depth: int = 10
 @export var sensor_count: int = 5
 @export var sensor_scene: PackedScene
+var sensors = []
 
-func get_sensors() -> Array:
-	var sensors: Array = []
+func _ready() -> void:
 	var x = position.x
 	var z = position.z
 	var step = float(depth) / float(sensor_count)
@@ -13,4 +13,3 @@ func get_sensors() -> Array:
 		var sensor = sensor_scene.instantiate() as Sensor
 		sensor.position = Vector3(x, -i * step, z)
 		sensors.append(sensor)
-	return sensors
