@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://nib3226a3r5v"]
+
+[ext_resource type="Script" uid="uid://bdxoqgxod2ede" path="res://scripts/Sensor.gd" id="1_42blq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l45pj"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_42blq"]
+material = SubResource("StandardMaterial3D_l45pj")
+height = 1.0
+
+[sub_resource type="CSharpScript" id="CSharpScript_l45pj"]
+
+[node name="Sensor" type="Node3D"]
+script = ExtResource("1_42blq")
+
+[node name="SensorMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_42blq")
+
+[node name="RMQListener" type="Node" parent="."]
+script = SubResource("CSharpScript_l45pj")
+
+[node name="SensorLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.643601, 0.554621)
+billboard = 1
+text = "HELLO"

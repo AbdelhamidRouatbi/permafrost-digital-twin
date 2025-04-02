@@ -30,18 +30,27 @@ with open(config_path, 'r') as file:
     config = json.load(file)
 print(config["frequency"])
 frequency = config["frequency"]
+timestep = config["timestep"]
+line_counter = -1
+
 
 print(file_path)
 with open(file_path, 'r') as file:
     # Skip the header row
     next(file)
     
-    timestep = 0  # initial timestamp in minutes
     
     # Loop through the csv file line by line
     for line in file:
+        line_counter += 1
         line = line.strip()
         columns = line.split(",")
+        
+        # Skip the timestep lines based on the counter
+        if line_counter % timestep != 0:
+            continue
+
+
         sensor_data = ', '.join(columns)
         
         # The message includes the file name and the sensor reading
@@ -58,5 +67,4 @@ with open(file_path, 'r') as file:
         )
         
         print(f"Sent: {message}")
-        timestep += 30  # next readings happen after 30 minutes
         time.sleep(frequency)

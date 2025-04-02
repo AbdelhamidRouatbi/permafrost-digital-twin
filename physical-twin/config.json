@@ -1,3 +1,4 @@
 {
-	"frequency": 0.1
+	"frequency": 3,
+	"timestep": 10
 }

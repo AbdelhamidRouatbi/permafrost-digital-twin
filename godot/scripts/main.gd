@@ -4,12 +4,11 @@ var boreholes: Array = []
 var sensors: Array = []
 var sensorsBelow: Array = []
 @onready var heatMap = $HeatMap
-
+var heatmapInitialScale = Vector3()
 #var elements: Array = []
 #var occupied_space: Dictionary = {}
 
 func _ready():
-	setup()
 	generate_boreholes()
 	generate_heatMap()
 	print("There are " + str(sensors.size()) + " sensors.")
@@ -23,12 +22,12 @@ func generate_boreholes():
 		for i in range(1, 7):
 			var s = sensor.duplicate()
 			s.position = Vector3(s.position.x, -5.0*i, s.position.z)
+			s.pos = s.position
 			sensor.sensorsBelow.append(s)
 			add_child(s)
 			s.temperature = sensor.temperature - 2.0*i
 			s._update()
 			sensorsBelow.append(s)
-		
 	
 		
 func generate_heatMap():
@@ -40,24 +39,20 @@ func generate_heatMap():
 	var min_y = sensors.map(func(s): return s.sensorsBelow.map(func(b): return b.position.y).min()).min()
 	
 	var box_size = Vector3(max_x - min_x, max_y - min_y, max_z - min_z)
+	heatmapInitialScale = box_size
 	var center_position = Vector3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2)
 	heatMap.scale = box_size
 	heatMap.transform.origin = center_position
 	var meshCount = 5
-	var step = Vector3(1.0, 1.0, 1.0)
+	var step = Vector3(2.0, 2.0, 2.0)
 	box_size = box_size - step
 	while(box_size.x > 0.0 and box_size.y > 0.0 and box_size.z > 0.0):
 		var new_mesh = heatMap.duplicate()
 		new_mesh.scale = box_size
 		box_size = box_size - step
 		add_child(new_mesh)
-	
-	
-func setup():
-	for child in get_children():
-		if child is Borehole:
-			boreholes.append(child)
-			
+
+
 func _process(delta):
 	var data = PackedFloat32Array()
 	for sensor in sensors:
@@ -85,4 +80,29 @@ func processRmq(sensorName, temperature):
 		if (sensor.name == sensorName): 
 			sensor.temperature = temperature
 			sensor._update()
-		
+			break;
+			
+func getTemperatures(sensorName):
+	
+	for sensor in sensors:
+		if (sensor.name == sensorName):
+			return JSON.stringify(sensor.sensorsBelow.map(func(s): return s.temperature+273.15))	
+			
+func getDepths(sensorName):
+	var maxDepthInMeters = 10.0	
+	for sensor in sensors:
+		if (sensor.name == sensorName):
+			return JSON.stringify(sensor.sensorsBelow.map(func(s): return abs((2.0/15.0)*s.pos.y*0.95)))
+
+func updateTemperatures(sensorName, surfaceTemperature, belowTemperatures):
+	for sensor in sensors:
+		if (sensor.name == sensorName):
+			sensor.temperature = surfaceTemperature
+			sensor._update()
+			for i in range(belowTemperatures.size()):
+				sensor.sensorsBelow[i].temperature = belowTemperatures[i]
+				sensorsBelow[i]._update()
+	print(sensorName + " : " + str(surfaceTemperature))
+
+func _on_heatmap_size_drag_ended(value_changed: bool) -> void:
+	heatMap.scale = heatmapInitialScale * $Settings/MarginContainer/VBoxContainer/HeatmapSize.value
