@@ -13,7 +13,7 @@ void fragment() {
 	float numerator = 0.0;
 	float denominator = 0.0;
 	for (int i = 0; i < sensor_count; i++) {
-		if (abs(world_pos.y - sensors[i].y) < 3.0)
+		if (abs(world_pos.y - sensors[i].y) < 6.0)
 		{
 		float dist = distance(world_pos, vec3(sensors[i].x, sensors[i].y, sensors[i].z));
 		if (dist != 0.0) {

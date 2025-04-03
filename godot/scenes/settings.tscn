@@ -54,5 +54,11 @@ offset_right = 134.0
 offset_bottom = 40.0
 text = "0"
 
+[node name="HeatmapSize" type="HSlider" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
 [connection signal="toggled" from="MarginContainer/VBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/Temperature_Inc" to="." method="_on_increment_value_changed"]

@@ -5,6 +5,7 @@ using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 using Newtonsoft.Json;
 
 public partial class RmqListener : Node
@@ -93,9 +94,59 @@ public partial class RmqListener : Node
 			}
 			else
 			{
+
 				string sensorName = parts[0].Trim();
-				float temperature = parts[1].Trim().ToFloat() - 273;
-				main.Call("processRmq", sensorName, temperature);
+				float temperature = parts[1].Trim().ToFloat();
+
+				var sensorTemperatures = GetParent().Call("getTemperatures", sensorName);
+				var sensorDepths = GetParent().Call("getDepths", sensorName);
+
+				var inputData = new
+				{
+					surfaceTemperature = temperature,
+					depths = sensorDepths.Obj,
+					temperatures = sensorTemperatures.Obj
+				};
+
+				string jsonInput = JsonConvert.SerializeObject(inputData);
+				string encodedJson = Convert.ToBase64String(Encoding.UTF8.GetBytes(jsonInput));
+
+
+				// Call temperature model script
+				ProcessStartInfo psi = new ProcessStartInfo();
+				psi.FileName = "C:/Users/moone/anaconda3/python.exe";
+				psi.Arguments = $"C:/Users/moone/OneDrive/Desktop/work/permafrost-digital-twin/models/temperature/Stefan2_func.py {encodedJson}";
+				psi.RedirectStandardOutput = true;
+				psi.RedirectStandardError = true;
+				psi.UseShellExecute = false;
+				psi.CreateNoWindow = true;
+
+				//List<float> floatList = new List<float>();
+
+				Godot.Collections.Array floatList = [];
+
+				using (Process process = new Process { StartInfo = psi })
+				{
+					process.Start();
+					string output = process.StandardOutput.ReadToEnd();
+					string error = process.StandardError.ReadToEnd();
+					process.WaitForExit();
+
+					string cleanedStr = output.Trim().TrimStart('[').TrimEnd(']');
+					foreach (string s in cleanedStr.Split(','))
+					{
+
+						if (float.TryParse(s, out float result))
+						{
+							floatList.Add(result - 273.15);
+						}
+					}
+				}
+				if (floatList.Count == 6)
+				{
+					temperature -= 273.15f;
+					GetParent().Call("updateTemperatures", sensorName, temperature, floatList);
+				}
 			}
 		}
 		else

@@ -58,9 +58,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.9915, 0, 50.7232)
 
 [node name="Settings" parent="." instance=ExtResource("8_tipki")]
 
-[node name="HeatmapSize" parent="Settings/MarginContainer/VBoxContainer" index="2"]
-visible = false
-
 [node name="CD104" parent="." instance=ExtResource("10_choun")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 102.293, 0, 21.9202)
@@ -85,7 +82,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 79.8204, 0, 182.621)
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 174.165, 0, 39.5252)
 
-[connection signal="value_changed" from="Settings/MarginContainer/VBoxContainer/HeatmapSize" to="." method="_on_heatmap_size_drag_ended"]
-
 [editable path="Terrain"]
-[editable path="Settings"]
