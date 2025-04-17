@@ -1,9 +1,6 @@
 # permafrost-digital-twin
-
-To start the physical twin:
-
-1. Open jupyter notebook
-2. Run the cells of docker/setup.ipynb
-3. run the cells of physical-twin/physical_twin.ipynb
-
-This will start sending messages containing a the temperature readings of the sensors and the timestamp. For now, all the sensor input goes into the same queue.
+To run:
+1. Start docker.
+2. Run the setup jupyter notebook in docker folder.
+3. Run the command in physical-twin/cmd.txt. This will sending the physical twin data.
+4. Run the godot project for the visualization, or go to localhost:8086 for influxdb monitoring 
